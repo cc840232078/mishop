@@ -1,0 +1,12 @@
+com\xiaomi\mishop\persistence\BaseEntity.class
+com\xiaomi\mishop\persistence\BaseService.class
+com\xiaomi\mishop\utils\BeanValidator.class
+com\xiaomi\mishop\persistence\BaseDao.class
+com\xiaomi\mishop\webSupport\PageTag.class
+com\xiaomi\mishop\persistence\BaseServiceImpl.class
+com\xiaomi\mishop\webSupport\Page.class
+com\xiaomi\mishop\webSupport\PageResult.class
+com\xiaomi\mishop\persistence\BaseController.class
+com\xiaomi\mishop\utils\PattenUtil.class
+com\xiaomi\mishop\persistence\Result.class
+com\xiaomi\mishop\utils\HttpClientUtils.class

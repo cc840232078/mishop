@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace  写的是Dao这个interface接口-->
+<mapper namespace="com.xiaomi.mishop.dao.GoodsCarDao">
+
+    <select id="getGoodsVersionId" resultType="java.lang.Integer">
+        SELECT
+            goods_version_id
+        FROM
+            t_goods_car
+        WHERE
+            user_id =#{userid}
+    </select>
+
+    <select id="getGoodsVersion" resultType="com.xiaomi.mishop.entity.GoodsVersion">
+        SELECT
+        a.id as "id",
+        a.goods_info_id as "goodsInfo.id",
+        a.goods_price as "goodsPrice",
+        a.goods_stock as "goodsStock",
+        a.version as "version",
+        b.goods_name as "goodsInfo.goodsName",
+        b.goods_description as "goodsInfo.goodsDescription",
+        b.goods_pic as "goodsInfo.goodsPic",
+        b.goods_fatherid as "goodsInfo.goodsTypeFather.id",
+        b.goods_parentid as "goodsInfo.goodsTypeFather.goodsType.id"
+        FROM
+        t_goods_version a
+        LEFT JOIN t_goods_info b ON a.goods_info_id = b.id
+        WHERE a.id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getGoodsCar" resultType="com.xiaomi.mishop.entity.GoodsCar">
+        SELECT
+            c.id AS "id",
+            c.user_id AS "userId.id",
+            c.goods_version_id AS "goodsVersion.id",
+            c.num AS "num",
+            a.goods_info_id AS "goodsVersion.goodsInfo.id",
+            a.goods_price AS "goodsVersion.goodsPrice",
+            a.goods_stock AS "goodsVersion.goodsStock",
+            a.version AS "goodsVersion.version",
+            b.goods_name AS "goodsVersion.goodsInfo.goodsName",
+            b.goods_description AS "goodsVersion.goodsInfo.goodsDescription",
+            b.goods_pic AS "goodsVersion.goodsInfo.goodsPic",
+            b.goods_fatherid AS "goodsVersion.goodsInfo.goodsTypeFather.id",
+            b.goods_parentid AS "goodsVersion.goodsInfo.goodsTypeFather.goodsType.id"
+        FROM
+            t_goods_version a,
+            t_goods_info b,
+            t_goods_car c
+        WHERE
+            c.goods_version_id = a.id
+        AND a.goods_info_id = b.id
+        AND c.user_id = #{id}
+    </select>
+
+    <select id="getgoodsCarAddress" resultType="com.xiaomi.mishop.entity.Address">
+        SELECT
+            id AS 'id',
+            shouhuoren AS 'shouhuoren',
+            phone AS 'phone',
+            address AS 'address',
+            userid AS 'user.id',
+            isDefault AS 'isdefault'
+        FROM
+            t_address
+        WHERE
+            userid = #{id}
+    </select>
+
+    <delete id="deletegGoodesCar">
+        DELETE
+        FROM
+            t_goods_car
+        WHERE
+            user_id = #{id}
+    </delete>
+
+    <insert id="createOrder">
+         INSERT INTO t_order (
+            id,
+            o_sendtype,
+            o_paytype,
+            o_paycount,
+            user_id,
+            o_shperson,
+            o_shphone,
+            o_shaddress,
+            o_starve,
+            o_creadedate
+        )
+        VALUES
+            (
+                #{id},
+                #{oSendtype},
+                #{oPaytype},
+                #{oPaycount},
+                #{userId.id},
+                #{oShperson},
+                #{oShphone},
+                #{oShaddress},
+                #{oStarve},
+                #{oCreadedate}
+            )
+    </insert>
+
+    <insert id="createOrderDetail">
+        <!--<foreach collection="orderDetailList" open="(" close=")" separator="," item="OrderDetail">
+            INSERT INTO t_order_detail (
+                o_orderid,
+                goodsname,
+                goodsprice,
+                goods_description,
+                goodsnum,
+                goodspic,
+                goods_total_price
+            )
+            VALUES
+            (
+                #{OrderDetail.order.id},
+                #{OrderDetail.goodsVersion.goodsInfo.goodsName},
+                #{OrderDetail.goodsVersion.goodsPrice},
+                #{OrderDetail.goodsVersion.goodsInfo.goodsDescription},
+                #{OrderDetail.goodsnum},
+                #{OrderDetail.goodsVersion.goodsInfo.goodsPic},
+                #{OrderDetail.goodsVersion.goodsStock}
+            );
+        </foreach>-->
+
+
+        INSERT INTO t_order_detail (
+        o_orderid,
+        goodsname,
+        goodsprice,
+        goods_description,
+        goodsnum,
+        goodspic,
+        goods_total_price
+        )
+        VALUES
+        <foreach collection="orderDetailList" index="index" separator="," item="OrderDetail">
+            <!-- <foreach collection="orderDetailList" open="(" close=")" separator="," item="OrderDetail">
+                 collection="list" item="item" index="index" separator=","-->
+            (
+            #{OrderDetail.order.id},
+            #{OrderDetail.goodsVersion.goodsInfo.goodsName},
+            #{OrderDetail.goodsVersion.goodsPrice},
+            #{OrderDetail.goodsVersion.goodsInfo.goodsDescription},
+            #{OrderDetail.goodsnum},
+            #{OrderDetail.goodsVersion.goodsInfo.goodsPic},
+            #{OrderDetail.goodsVersion.goodsStock}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteGoodesCar">
+        DELETE
+        FROM
+            t_goods_car
+        WHERE
+            user_id = #{userId}
+            and
+            goods_version_id=#{goodsVersionId}
+    </delete>
+
+    <update id="modifyNum">
+        UPDATE t_goods_car
+        SET num = #{goodsVersionNum}
+        WHERE
+            user_id = #{userId}
+        AND goods_version_id = #{goodsVersionId}
+    </update>
+
+</mapper>

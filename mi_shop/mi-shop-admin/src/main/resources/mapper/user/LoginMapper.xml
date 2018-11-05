@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaomi.mishop.dao.LoginDao">
+
+    <sql id="userColumns">
+        a.id as "id",
+        a.user_name as "userName",
+        a.email as "email",
+        a.phone as "phone",
+        a.created,
+        a.updated
+    </sql>
+
+    <select id="getByEmailAndPassword" resultType="com.xiaomi.mishop.entity.User">
+        select
+        <include refid="userColumns"></include>
+        from t_admin a
+        where a.email=#{email} and a.password=#{password}
+    </select>
+
+    <select id="page" resultType="User" parameterType="java.util.Map">
+        SELECT
+        <include refid="userColumns"/>
+        FROM
+        t_admin AS a
+        <where>
+            <if test="user.userName != null and user.userName !=''">
+                AND a.userName LIKE CONCAT ('%',#{user.userName},'%')
+            </if>
+            <if test="user.email != null and user.email !=''">
+                AND a.email LIKE CONCAT ('%',#{user.email},'%')
+            </if>
+            <if test="user.phone != null and user.phone !=''">
+                AND a.phone LIKE CONCAT ('%',#{user.phone},'%')
+            </if>
+        </where>
+        LIMIT #{start},#{length}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_admin
+        <where>
+            <if test="userName != null and userName !=''">
+                AND userName LIKE CONCAT ('%',#{userName},'%')
+            </if>
+            <if test="email != null and email !=''">
+                AND email LIKE CONCAT ('%',#{email},'%')
+            </if>
+            <if test="phone != null and phone !=''">
+                AND phone LIKE CONCAT ('%',#{phone},'%')
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+</mapper>

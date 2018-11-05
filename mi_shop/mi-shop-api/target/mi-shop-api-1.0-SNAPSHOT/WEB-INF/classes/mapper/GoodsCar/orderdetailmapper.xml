@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaomi.mishop.dao.OrderDetailDao">
+
+    <sql id="userColumns">
+        id AS "id",
+        o_orderid AS "order.id",
+        goodsname AS "goodsInfo.goodsName",
+        goodsprice AS "goodsInfo.goodsPrice",
+        goods_description AS "goodsInfo.goodsDescription",
+        goodsnum AS  "goodsInfo.goodsNum",
+        goodspic AS  "goodsInfo.goodsPic",
+        goods_total_price AS "goodsInfo.goodsTotalPrice"
+    </sql>
+
+    <select id="getById" resultType="com.xiaomi.mishop.entity.OrderDetail">
+        select
+        <include refid="userColumns"></include>
+        from t_order_detail
+        where id=#{id}
+    </select>
+
+    <select id="getListById" resultType="com.xiaomi.mishop.entity.OrderDetail">
+        select
+        <include refid="userColumns"></include>
+        from t_order_detail
+        where o_orderid=#{id}
+    </select>
+
+    <select id="getByEmailAndPassword" resultType="com.xiaomi.mishop.entity.OrderDetail">
+        select
+        <include refid="userColumns"></include>
+        from tb_user a
+        where a.email=#{email} and a.password=#{password}
+    </select>
+
+
+    <insert id="save" >
+        insert into tb_user (username,password,email,phone,created,updated) values (#{userName},#{password},#{email},#{phone},#{created},#{updated})
+    </insert>
+
+    <update id="update">
+        update tb_user set username=#{userName},phone=#{phone},email=#{email},updated=#{updated} where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from tb_user where id=#{id}
+    </delete>
+
+
+
+</mapper>

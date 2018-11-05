@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--<bean id="user" class="com.cq.entity.User"></bean>
+    <bean id="userDaoImpl" class="com.cq.dao.daoImpl.UserDaoImpl"></bean>
+    <bean id="userServiceImpl" class="com.cq.service.serviceImpl.UserServiceImpl">
+        <property name="userDao" ref="userDaoImpl"></property>
+    </bean>
+
+    <bean id="springHolder" class="com.cq.utils.SpringHolder"></bean>-->
+    <context:component-scan base-package="com.xiaomi.mishop">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+    </context:component-scan>
+    <import resource="classpath:spring-context-druid.xml"></import>
+    <import resource="classpath:spring-context-mybatis.xml"></import>
+
+    <!--<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>-->
+    <!--<bean id="beanValidator" class="com.cq.myshop.utils.BeanValidator">-->
+    <!--<property name="validator" ref="validator" />-->
+    <!--</bean>-->
+
+    <bean id="orderBiz" class="com.xiaomi.mishop.service.Impl.OrderBizImpl"></bean>
+    <bean id="userBizImpl" class="com.xiaomi.mishop.service.Impl.UserBizImpl"></bean>
+    <bean id="orderDetailBizImpl" class="com.xiaomi.mishop.service.Impl.OrderDetailBizImpl"></bean>
+    <bean id="addressBizImpl" class="com.xiaomi.mishop.service.Impl.AddressBizImpl"></bean>
+
+</beans>

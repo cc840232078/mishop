@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaomi.mishop.dao.GoodsInfoDao">
+
+    <sql id="GoodsColumns">
+        a.id AS "id",
+        c.id AS "goodsInfo.goodsTypeFather.id",
+        c.gtype_name AS "goodsInfo.goodsTypeFather.gtypeName",
+        a.goods_info_id AS "goodsInfo.id",
+        a.goods_price AS "goodsPrice",
+        a.goods_stock AS "goodsStock",
+        a.version AS "version",
+        b.goods_name AS "goodsInfo.goodsName",
+        b.goods_description AS "goodsInfo.goodsDescription",
+        b.goods_pic AS "goodsInfo.goodsPic",
+        b.goods_fatherid AS "goodsInfo.goodsTypeFather.id",
+        b.goods_parentid AS "goodsInfo.goodsTypeFather.goodsType.id"
+    </sql>
+
+
+    <select id="queryGoodsInfo" resultType="com.xiaomi.mishop.entity.GoodsVersion">
+        select
+        <include refid="GoodsColumns"></include>
+        from
+        t_goods_version a,
+        t_goods_info b,
+        t_goods_type c
+        where
+        c.id = b.goods_fatherid AND a.goods_info_id = b.id;
+    </select>
+
+    <delete id="delete">
+        delete from t_goods_version where  id = #{id};
+    </delete>
+
+    <select id="getById" resultType="com.xiaomi.mishop.entity.GoodsVersion">
+      select
+    <include refid="GoodsColumns"></include>
+    from
+    t_goods_version a,
+    t_goods_info b,
+    t_goods_type c
+    where
+    c.id = b.goods_fatherid AND a.goods_info_id = b.id and a.id=#{id};
+  </select>
+
+
+
+
+    <update id="update">
+    update t_goods_info a,t_goods_version b
+    set
+    a.goods_name=#{goodsInfo.goodsName},
+    a.goods_description=#{goodsInfo.goodsDescription},
+    b.goods_price=#{goodsPrice},
+    b.goods_stock=#{goodsStock},
+    b.version=#{version}
+    where a.id=b.goods_info_id and b.id=#{id}
+    </update>
+
+
+
+    <select id="search" resultType="com.xiaomi.mishop.entity.GoodsVersion">
+        select
+        <include refid="GoodsColumns"></include>
+        from
+        t_goods_version a,
+        t_goods_info b,
+        t_goods_type c
+    where
+        c.id = b.goods_fatherid AND a.goods_info_id = b.id
+    <if test="goodsName!=null and goodsName!=''">
+        and b.goods_name like concat('%',#{goodsName},'%')
+    </if>
+
+    </select>
+
+    <select id="queryChildrenType" resultType="com.xiaomi.mishop.entity.GoodsType">
+--         select
+-- 		a.id as "id",
+--         a.gtype_name as "gtypeName",
+-- 		IFNULL(b.id,0) as "goodsType.id",
+--         IFNULL(b.gtype_name,'/') as "goodsType.gtypeName"
+--         from
+--         t_goods_type a
+--         LEFT join t_goods_type b on a.gtype_parentid=b.id
+--         where
+-- 				a.id=#{id}
+
+        select
+				a.id as "id",
+                a.gtype_name as "gtypeName",
+				IFNULL(b.gtype_parentid,0) as "goodsType.id",
+				IFNULL(b.gtype_name,'/') as "goodsType.gtypeName"
+        from
+            t_goods_type a LEFT join t_goods_type b
+            on a.gtype_parentid=b.id
+        where
+			b.id=#{id}
+    </select>
+
+
+
+
+
+
+
+
+
+</mapper>

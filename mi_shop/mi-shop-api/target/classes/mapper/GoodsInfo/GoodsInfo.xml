@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace  写的是Dao这个interface接口-->
+<mapper namespace="com.xiaomi.mishop.dao.GoodsInfoDao">
+    <sql id="goodsInfoColumns">
+      a.id as "id",
+      a.goods_name as "goodsName",
+      a.goods_description as "goodsDescription",
+      a.goods_pic as "goodsPic",
+      a.goods_fatherid as "goodsTypeFather.id",
+      a.goods_parentid as "goodsTypeFather.goodsType.id"
+</sql>
+
+    <select id="findList" resultType="com.xiaomi.mishop.entity.GoodsInfo">
+        SELECT
+        <include refid="goodsInfoColumns"></include>
+        FROM t_goods_info a
+        WHERE a.goods_fatherid =4
+
+
+    </select>
+
+    <select id="findList1" resultType="com.xiaomi.mishop.entity.GoodsInfo">
+        SELECT
+        <include refid="goodsInfoColumns"></include>
+        FROM t_goods_info a
+        WHERE a.goods_fatherid =3
+
+
+    </select>
+
+
+    <select id="xiangqing" resultType="com.xiaomi.mishop.entity.GoodsVersion">
+
+        SELECT
+        b.id AS "id",
+        a.goods_name AS "goodsInfo.goodsName",
+        a.goods_description AS "goodsInfo.goodsDescription",
+        a.goods_pic AS "goodsInfo.goodsPic",
+        b.goods_price AS "goodsPrice",
+        b.version AS "version",
+        b.goods_stock AS "goodsStock"
+        FROM
+        t_goods_info a
+        LEFT JOIN t_goods_version b ON a.id = b.goods_info_id
+        WHERE
+        a.id = #{id}
+    </select>
+
+
+</mapper>

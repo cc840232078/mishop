@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+>
+
+    <!--配置加载properties文件-->
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:project.properties"/>
+    <!--扫描类-->
+    <!--use-default-filters="false" 不扫描注解-->
+    <!--但是include-filter包含了Controller所以，Controller正常-->
+    <context:component-scan base-package="com.xiaomi.mishop" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:include-filter>
+    </context:component-scan>
+
+    <!--引入annotation driven-->
+    <mvc:annotation-driven/>
+
+    <!--配置视图解析器 jsp -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="${web.view.prefix}"></property>
+        <property name="suffix" value="${web.view.suffix}"></property>
+    </bean>
+
+    <!--静态资源配置-->
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="12343241"></mvc:resources>
+
+    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+    <!--<property name="defaultEncoding" value="UTF-8" />-->
+    <!--&lt;!&ndash; 指定所上传文件的总大小不能超过200KB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 &ndash;&gt;-->
+    <!--<property name="maxUploadSize" value="200000000"/>-->
+    <!--&lt;!&ndash; 指定上传文件的临时路径 &ndash;&gt;-->
+    <!--&lt;!&ndash; <property name="uploadTempDir" value="uploadTempDirectory" /> &ndash;&gt;-->
+    <!--</bean>-->
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <!--<mvc:mapping path="/**/*.jsp/>-->
+            <!--<mvc:exclude-mapping path="/user/index"/>-->
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/index"/>
+            <mvc:exclude-mapping path="/ilogin"/>
+            <mvc:exclude-mapping path="/iregister"/>
+            <mvc:exclude-mapping path="/"/>
+            <mvc:exclude-mapping path="/kaptcha"/>
+            <mvc:exclude-mapping path="/static/**"/>
+            <!--<mvc:exclude-mapping path="/user/index"/>-->
+
+            <bean class="com.xiaomi.mishop.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>

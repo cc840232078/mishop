@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaomi.mishop.dao.UserDao">
+
+    <sql id="userColumns">
+        a.id as "id",
+        a.user_name as "userName",
+        a.email as "email",
+        a.phone as "phone",
+        a.created,
+        a.updated
+    </sql>
+
+    <select id="page" resultType="User" parameterType="java.util.Map">
+        SELECT
+        <include refid="userColumns"/>
+        FROM
+        t_admin AS a
+        <where>
+            <if test="user.userName != null and user.userName !=''">
+                AND a.user_name LIKE CONCAT ('%',#{user.userName},'%')
+            </if>
+            <if test="user.email != null and user.email !=''">
+                AND a.email LIKE CONCAT ('%',#{user.email},'%')
+            </if>
+            <if test="user.phone != null and user.phone !=''">
+                AND a.phone LIKE CONCAT ('%',#{user.phone},'%')
+            </if>
+        </where>
+        LIMIT #{start},#{length}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_admin
+        <where>
+            <if test="userName != null and userName !=''">
+                AND user_name LIKE CONCAT ('%',#{userName},'%')
+            </if>
+            <if test="email != null and email !=''">
+                AND email LIKE CONCAT ('%',#{email},'%')
+            </if>
+            <if test="phone != null and phone !=''">
+                AND phone LIKE CONCAT ('%',#{phone},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO `t_admin`
+        (`user_name`,`true_name`, `password`, `sex`, `phone`, `email`, `address`, `created`, `updated` )
+VALUES
+	( #{userName}, #{truename},#{password}, #{sex}, #{phone}, #{email}, #{address}, #{created}, #{updated});
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM t_admin WHERE id = #{id}
+    </delete>
+
+    <select id="getById" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM
+        t_admin AS a WHERE id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE
+            t_admin
+        SET
+             user_name = #{userName},
+             true_name = #{truename},
+             password = #{password},
+             phone = #{phone},
+             email = #{email},
+             updated = #{updated}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteMulti">
+        delete from
+        t_admin
+        where id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+
+    </delete>
+</mapper>

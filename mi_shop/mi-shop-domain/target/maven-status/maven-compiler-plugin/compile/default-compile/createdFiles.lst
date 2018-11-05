@@ -1,0 +1,8 @@
+com\xiaomi\mishop\entity\GoodsVersion.class
+com\xiaomi\mishop\entity\Order.class
+com\xiaomi\mishop\entity\User.class
+com\xiaomi\mishop\entity\Address.class
+com\xiaomi\mishop\entity\GoodsInfo.class
+com\xiaomi\mishop\entity\OrderDetail.class
+com\xiaomi\mishop\entity\GoodsCar.class
+com\xiaomi\mishop\entity\GoodsType.class

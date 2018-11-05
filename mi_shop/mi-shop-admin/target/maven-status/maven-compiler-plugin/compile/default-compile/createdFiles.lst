@@ -1,0 +1,17 @@
+com\xiaomi\mishop\controller\UserController.class
+com\xiaomi\mishop\controller\GoodsInfoController.class
+com\xiaomi\mishop\service\GoodsInfoService.class
+com\xiaomi\mishop\service\impl\MemberServiceImpl.class
+com\xiaomi\mishop\service\MemberService.class
+com\xiaomi\mishop\service\LoginService.class
+com\xiaomi\mishop\controller\MemberController.class
+com\xiaomi\mishop\dao\LoginDao.class
+com\xiaomi\mishop\dao\GoodsInfoDao.class
+com\xiaomi\mishop\service\impl\UserServiceImpl.class
+com\xiaomi\mishop\dao\MemberDao.class
+com\xiaomi\mishop\dao\UserDao.class
+com\xiaomi\mishop\service\UserService.class
+com\xiaomi\mishop\service\impl\LoginServiceImpl.class
+com\xiaomi\mishop\intercepter\AdminLoginIntercepeter.class
+com\xiaomi\mishop\controller\LoginController.class
+com\xiaomi\mishop\service\impl\GoodsInfoServiceImpl.class

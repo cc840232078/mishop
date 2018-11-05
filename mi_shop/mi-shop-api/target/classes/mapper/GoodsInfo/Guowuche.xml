@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace  写的是Dao这个interface接口-->
+<mapper namespace="com.xiaomi.mishop.dao.GuowucheDao">
+
+    <insert id="saveGoodsCar">
+        INSERT INTO t_goods_car(user_id,goods_version_id,num)
+        VALUES (#{userId},#{goodsVersionId},1)
+    </insert>
+
+</mapper>
